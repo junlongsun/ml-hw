@@ -23,6 +23,10 @@ class Numbers:
 
         self.train_x, self.train_y = train_set
         self.test_x, self.test_y = valid_set
+        #print "test_x: " , self.test_x.shape
+        #print "test_y: " , self.test_y.shape
+        #print "train_x: " , self.train_x.shape
+        #print "train_y: " , self.train_y.shape
         f.close()
 
 
@@ -55,14 +59,18 @@ class Knearest:
 
         :param item_indices: The indices of the k nearest neighbors
         """
-        assert len(item_indices) == self._k, "Did not get k inputs"
+
+        #assert len(item_indices) == self._k, "Did not get k inputs"
 
         # Finish this function to return the most common y value for
         # these indices
         #
         # http://docs.scipy.org/doc/numpy/reference/generated/numpy.median.html
 
-        return self._y[item_indices[0]]
+        label = self._y[item_indices]
+        labelMedian = median(label)
+
+        return labelMedian
 
     def classify(self, example):
         """
@@ -74,9 +82,14 @@ class Knearest:
 
         # Finish this function to find the k closest points, query the
         # majority function, and return the value.
+        dist, ind = self._kdtree.query(example, self._k)
 
-        return self.majority(list(random.randint(0, len(self._y)) \
-                                  for x in xrange(self._k)))
+        #randomNumber = random.randint(0, len(self._y))
+        # covert randomNumber to list with dimension of self._k
+        #randomNumberList = list( randomNumber \
+        #                          for x in xrange(self._k))
+        #return self.majority(randomNumberList)
+        return self.majority(ind)
 
     def confusion_matrix(self, test_x, test_y):
         """
@@ -93,9 +106,13 @@ class Knearest:
         # mislabeled examples.  You'll need to call the classify
         # function for each example.
 
-        d = defaultdict(dict)
+        #d = defaultdict(dict)
+        d = defaultdict(lambda: defaultdict(int))
         data_index = 0
         for xx, yy in zip(test_x, test_y):
+            ii = test_y[data_index]
+            jj = self.classify(test_x[data_index])
+            d[ii][jj] = d[ii][jj] + 1
             data_index += 1
             if data_index % 100 == 0:
                 print("%i/%i for confusion matrix" % (data_index, len(test_x)))
@@ -129,7 +146,8 @@ if __name__ == "__main__":
                         help="Restrict training to this many examples")
     args = parser.parse_args()
 
-    data = Numbers("../data/mnist.pkl.gz")
+    #data = Numbers("../data/mnist.pkl.gz")
+    data = Numbers("mnist.pkl.gz")
 
     # You should not have to modify any of this code
 
