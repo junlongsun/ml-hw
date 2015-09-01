@@ -1,4 +1,6 @@
 from numpy import array
+#import sklearn
+#import sklearn
 from sklearn.neighbors import BallTree
 from knn import *
 

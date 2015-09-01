@@ -57,10 +57,6 @@ class Knearest:
         :param item_indices: The indices of the k nearest neighbors
         """
         assert len(item_indices) == self._k, "Did not get k inputs"
-        #任意产生k个聚类，然后确定聚类中心，或者直接生成k个中心。
-        #对每个点确定其聚类中心点。
-        #再计算其聚类新中心。
-        #重复以上步骤直到满足收敛要求。（通常就是确定的中心点不再改变。）
         dist, item_indices = self._kdtree.query(X[0], self._k)
 
 
@@ -82,7 +78,6 @@ class Knearest:
         # Finish this function to find the k closest points, query the
         # majority function, and return the value.
 
-        #对于输入example，判断与聚类中心最接近的是哪一个
         return self.majority(list(random.randint(0, len(self._y)) \
                                   for x in xrange(self._k)))
 
