@@ -1,5 +1,5 @@
 import random
-from numpy import zeros, sign
+from numpy import zeros, sign, mat, shape, ones, array, argmax, argmin
 from math import exp, log
 from collections import defaultdict
 
@@ -46,7 +46,15 @@ class Example:
                 self.x[vocab.index(word)] += float(count)
                 self.nonzero[vocab.index(word)] = word
         self.x[0] = 1
-
+        D = len(df)
+        sumX = sum(self.x)
+        self.tfidf = zeros(len(vocab))
+        for i in range(D):
+            if i>0:
+                idf = log(D/df[i])
+                tf = self.x[i] / sumX
+                self.tfidf[i] = tf * idf
+        self.tfidf[0] = 1
 
 class LogReg:
     def __init__(self, num_features, mu, step=lambda x: 0.05):
@@ -57,7 +65,7 @@ class LogReg:
         :param mu: Regularization parameter
         :param step: A function that takes the iteration as an argument (the default is a constant value)
         """
-        
+
         self.beta = zeros(num_features)
         self.mu = mu
         self.step = step
@@ -97,8 +105,36 @@ class LogReg:
         :param use_tfidf: A boolean to switch between the raw data and the tfidf representation
         :return: Return the new value of the regression coefficients
         """
+        if use_tfidf == True:
+            dataMatrix = mat(train_example.tfidf)
+        else:
+            dataMatrix = mat(train_example.x)
+        labelMat = mat(train_example.y).transpose()
+        m, n = shape(labelMat)
+        weights = mat(self.beta).transpose()
+        m1, n1 = shape(weights)
+        if iteration==0:
+            self.M = ones([m1])
 
-        # TODO: Implement updates in this function
+        for i in range(n):
+            h = sigmoid(dataMatrix[i,:] * weights)
+            error =  labelMat[i] - h
+            #print error
+            sum1 = error[0,0] * dataMatrix[i,:].transpose()
+            for j in range(m1):
+
+                gradient = (1/n) * (sum1[j])
+                if (self.mu == 0 ):
+                    weights[j] = (weights[j] + self.step(iteration) * gradient)
+                else:
+                    if  (dataMatrix[i,j] == 0):
+                        weights[j] = weights[j]
+                        self.M[j] += 1
+                    else:
+                        weights[j] = (weights[j] + self.step(iteration) * gradient)*(1 - 2 * self.mu * self.step(iteration))**(self.M[j])
+                        self.M[j] = 1
+
+        self.beta = weights.A1
 
         return self.beta
 
@@ -136,7 +172,8 @@ def read_dataset(positive, negative, vocab, test_proportion=.1):
 def step_update(iteration):
     # TODO (extra credit): Update this function to provide an
     # effective iteration dependent step size
-    return 1.0
+    alpha = 4/(1.0+iteration)+0.01
+    return alpha
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser()
@@ -166,10 +203,18 @@ if __name__ == "__main__":
     for pp in xrange(args.passes):
         for ii in train:
             update_number += 1
-            lr.sg_update(ii, update_number)
+            beta = lr.sg_update(ii, update_number, True)
 
             if update_number % 5 == 1:
                 train_lp, train_acc = lr.progress(train)
                 ho_lp, ho_acc = lr.progress(test)
                 print("Update %i\tTP %f\tHP %f\tTA %f\tHA %f" %
                       (update_number, train_lp, ho_lp, train_acc, ho_acc))
+                index1 = argmax(abs(beta))
+                index2 = argmin(abs(beta))
+                print "passes"
+                print pp
+                print index1
+                print vocab[index1]
+                print index2
+                print vocab[index2]
