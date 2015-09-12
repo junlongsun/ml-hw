@@ -19,29 +19,34 @@ corpus = [
      'Is this the first document?',
  ]
 X = vectorizer.fit_transform(corpus)
-
-print X
-
-analyze = vectorizer.build_analyzer()
-print (analyze("This is a text document to analyze.") == (
-     ['this', 'is', 'text', 'document', 'to', 'analyze']) )
-
-print (vectorizer.get_feature_names() == (
-     ['and', 'document', 'first', 'is', 'one',
-      'second', 'the', 'third', 'this']))
-
 print X.toarray()
 
-print vectorizer.vocabulary_.get('first')
-print vectorizer.transform(['Something completely new.']).toarray()
-print vectorizer.transform(['Something and new.']).toarray()
+test = ['this is good day']
+test1 = vectorizer.transform(test)
+print test1.toarray()
+
+#print X
+
+#analyze = vectorizer.build_analyzer()
+#print (analyze("This is a text document to analyze.") == (
+#     ['this', 'is', 'text', 'document', 'to', 'analyze']) )
+
+#print (vectorizer.get_feature_names() == (
+#     ['and', 'document', 'first', 'is', 'one',
+#      'second', 'the', 'third', 'this']))
+
+#print X.toarray()
+
+#print vectorizer.vocabulary_.get('first')
+#print vectorizer.transform(['Something completely new.']).toarray()
+#print vectorizer.transform(['Something and new.']).toarray()
 
 
 bigram_vectorizer = CountVectorizer(ngram_range=(1, 2),
                                      token_pattern=r'\b\w+\b', min_df=1)
 analyze = bigram_vectorizer.build_analyzer()
-print (analyze('Bi-grams are cool!') == (
-     ['bi', 'grams', 'are', 'cool', 'bi grams', 'grams are', 'are cool']))
+#print (analyze('Bi-grams are cool!') == (
+#     ['bi', 'grams', 'are', 'cool', 'bi grams', 'grams are', 'are cool']))
 X_2 = bigram_vectorizer.fit_transform(corpus).toarray()
 feature_index = bigram_vectorizer.vocabulary_.get('is this')
 
@@ -54,13 +59,13 @@ counts = [[3, 0, 1],
            [3, 2, 0],
            [3, 0, 2]]
 tfidf = transformer.fit_transform(counts)
-print (tfidf.toarray())
-print (transformer.idf_)
+#print (tfidf.toarray())
+#print (transformer.idf_)
 
 
 vectorizer = TfidfVectorizer(min_df=1)
 X = vectorizer.fit_transform(corpus)
 analyze = vectorizer.build_analyzer()
-print (analyze("This is a text document to analyze.") == (
-     ['this', 'is', 'text', 'document', 'to', 'analyze']))
-print X.toarray()
+#print (analyze("This is a text document to analyze.") == (
+#     ['this', 'is', 'text', 'document', 'to', 'analyze']))
+#print X.toarray()
