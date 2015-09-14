@@ -173,7 +173,7 @@ def step_update(iteration):
     # TODO (extra credit): Update this function to provide an
     # effective iteration dependent step size
     alpha = 4/(1.0+iteration)+0.01
-    return alpha
+    return 1.0
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser()
@@ -210,11 +210,11 @@ if __name__ == "__main__":
                 ho_lp, ho_acc = lr.progress(test)
                 print("Update %i\tTP %f\tHP %f\tTA %f\tHA %f" %
                       (update_number, train_lp, ho_lp, train_acc, ho_acc))
-                index1 = argmax(abs(beta))
-                index2 = argmin(abs(beta))
-                print "passes"
-                print pp
-                print index1
-                print vocab[index1]
-                print index2
-                print vocab[index2]
+                #index1 = argmax(abs(beta))
+                #index2 = argmin(abs(beta))
+                #print "passes"
+                #print pp
+                #print index1
+                #print vocab[index1]
+                #print index2
+                #print vocab[index2]
