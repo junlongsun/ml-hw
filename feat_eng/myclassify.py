@@ -33,9 +33,15 @@ class Featurizer:
 
     def show_top10(self, classifier, categories):
         feature_names = np.asarray(self.vectorizer.get_feature_names())
-        for i, category in enumerate(categories):
-            top10 = np.argsort(classifier.coef_[i])[-10:]
-            print("%s: %s" % (category, " ".join(feature_names[top10])))
+        if len(categories) == 2:
+            top10 = np.argsort(classifier.coef_[0])[-10:]
+            bottom10 = np.argsort(classifier.coef_[0])[:10]
+            print("Pos: %s" % " ".join(feature_names[top10]))
+            print("Neg: %s" % " ".join(feature_names[bottom10]))
+        else:
+            for i, category in enumerate(categories):
+                top10 = np.argsort(classifier.coef_[i])[-10:]
+                print("%s: %s" % (category, " ".join(feature_names[top10])))
 
 if __name__ == "__main__":
 
