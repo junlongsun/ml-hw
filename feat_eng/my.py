@@ -1,9 +1,31 @@
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import TfidfVectorizer
+import re
+import nltk
+from nltk.stem import WordNetLemmatizer
+from nltk.stem.snowball import SnowballStemmer
 
+from csv import DictReader, DictWriter
+
+import numpy as np
+from sklearn.decomposition import PCA
+
+from sklearn.pipeline import Pipeline, FeatureUnion
+from sklearn.svm import SVC
+
+from sklearn.datasets import load_iris
+
+iris = load_iris()
+
+X, y = iris.data, iris.target
+
+print np.shape(X)
+print np.shape(y)
+
+'''
 vectorizer = CountVectorizer(min_df=1)
-vectorizer
+vectorizerNew = CountVectorizer(ngram_range=(1, 2), token_pattern=r'\b\w+\b', min_df=1)
 
 CountVectorizer(analyzer='word', binary=False,
         decode_error='strict',
@@ -17,14 +39,57 @@ corpus = [
      'This is the second second document.',
      'And the third one.',
      'Is this the first document?',
+     'WeCanRuleTogether',
  ]
-X = vectorizer.fit_transform(corpus)
-print X.toarray()
 
-test = ['this is good day']
-test1 = vectorizer.transform(test)
-print test1.toarray()
+kTARGET_FIELD = 'spoiler'
+kTEXT_FIELD = 'sentence'
+kTrope = 'trope'
 
+train = list(DictReader(open("train.csv", 'r')))
+test = list(DictReader(open("test.csv", 'r')))
+
+wnl = WordNetLemmatizer()
+stemmer = SnowballStemmer("english")
+
+def split_on_caps(str):
+
+    rs = re.findall('[A-Z][^A-Z]*',str)
+    fs = ""
+    for word in rs:
+        fs += " " + stemmer.stem(word)
+
+    return fs
+
+def refineSentence(groupText, index):
+    sen = []
+    #sentences = nltk.sent_tokenize(text)
+    for x in groupText:
+        temp = split_on_caps(x[index])
+        #temp1 =  stemmer.stem(temp)
+        #wnl.lemmatize(temp)
+        sen.append(temp)
+    return sen
+
+#print wnl.lemmatize("runing")
+#print wnl.lemmatize("playing")
+#print wnl.lemmatize("I'm runing and playing")
+
+sen = refineSentence(train, kTrope)
+print sen
+#print sen
+#print split_on_caps(x[kTrope] for x in train)
+
+#
+
+#print wnl.lemmatize(sen)
+
+vectorizerNew1 = CountVectorizer(ngram_range=(1,1), analyzer="word", token_pattern=r'\b\w+\b', min_df=1)
+vectorizerNew1.fit_transform(sen)
+#print vectorizerNew1.get_feature_names()
+'''
+
+'''
 #print X
 
 #analyze = vectorizer.build_analyzer()
@@ -69,3 +134,5 @@ analyze = vectorizer.build_analyzer()
 #print (analyze("This is a text document to analyze.") == (
 #     ['this', 'is', 'text', 'document', 'to', 'analyze']))
 #print X.toarray()
+
+'''
