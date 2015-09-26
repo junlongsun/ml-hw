@@ -2,7 +2,7 @@ from random import randint, seed
 from collections import defaultdict
 from math import atan, sin, cos, pi
 
-from numpy import array
+from numpy import array, zeros
 from numpy.linalg import norm
 
 from bst import BST
@@ -185,9 +185,18 @@ def axis_aligned_hypotheses(dataset):
     Args:
       dataset: The dataset to use to generate hypotheses
     """
+    #length = 0
+    x = zeros(len(dataset))
+    y = zeros(len(dataset))
+    width = 0.5
+    height = 0.5
+    #Rectangle = {}
+    #d = defaultdict(set)
+    for i, j in zip(dataset, range(len(dataset))):
+        x[j] = i[0]
+        y[j] = i[1]
 
-    # TODO: complete this function
-    yield AxisAlignedRectangle(0, 0, 0, 0)
+        yield AxisAlignedRectangle(x[j]-0.5*width, y[j]-0.5*height, x[j]+0.5*width, y[j]+0.5*height)
 
 
 def coin_tosses(number, random_seed=0):
