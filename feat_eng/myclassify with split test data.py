@@ -116,9 +116,9 @@ sen2 = refineTropes(train, kTrope)
 vectorizerNew1 = CountVectorizer(ngram_range=(1,1), analyzer="word", token_pattern=r'\b\w+\b', min_df=1)
 x_train3 = vectorizerNew1.fit_transform(sen2)
 dataX3 = x_train3.toarray()
-
+#print len(train)
 #limit = len(train)
-limit = len(train)
+limit = 10
 y_train = y_train[0:limit,:]
 dataX1 = dataX1[0:limit,:]
 dataX2 = dataX2[0:limit,:]
@@ -126,7 +126,7 @@ dataX3 = dataX3[0:limit,:]
 lengthTemp = lengthTemp[0:limit]
 #print shape(dataX3)
 #dataX = np.c_[ dataX1, dataX2,  dataX3, sum(lengthTemp, axis=1)/max(sum(lengthTemp, axis=1)) ]
-dataX = np.c_[ dataX1, dataX2, dataX3, sum(lengthTemp, axis=1)/max(sum(lengthTemp, axis=1))  ]
+dataX = np.c_[ dataX1, dataX3, sum(lengthTemp, axis=1)/max(sum(lengthTemp, axis=1))  ]
 #dataX = np.c_[ dataX1, dataX2]
 print shape(dataX)
 
@@ -134,10 +134,10 @@ doc_terms_train, doc_terms_test, y_train, y_test= train_test_split(dataX, y_trai
 #doc_terms_train, doc_terms_test, y_train, y_test= train_test_split(dataX, y_train, test_size = 0.2)
 
 print shape(doc_terms_train)
-pca = PCA(n_components=150)
-selection = SelectKBest(k=400)
-
+pca = PCA(n_components=15)
+selection = SelectKBest(k=24)
 combined_features = FeatureUnion([("pca", pca), ("univ_select", selection)])
+#combined_features = FeatureUnion([("pca", pca), ("univ_select", selection)])
 combined_features.fit(doc_terms_train, y_train[:,0].A1)
 
 X_features = combined_features.transform(doc_terms_train)

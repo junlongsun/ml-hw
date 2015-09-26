@@ -84,12 +84,17 @@ class Knearest:
         # majority function, and return the value.
         dist, ind = self._kdtree.query(example, self._k)
 
+<<<<<<< HEAD
         #randomNumber = random.randint(0, len(self._y))
         # covert randomNumber to list with dimension of self._k
         #randomNumberList = list( randomNumber \
         #                          for x in xrange(self._k))
         #return self.majority(randomNumberList)
         return self.majority(ind)
+=======
+        return self.majority(list(random.randrange(len(self._y)) \
+                                  for x in xrange(self._k)))
+>>>>>>> ezubaric/master
 
     def confusion_matrix(self, test_x, test_y):
         """
@@ -119,7 +124,7 @@ class Knearest:
         return d
 
     @staticmethod
-    def acccuracy(confusion_matrix):
+    def accuracy(confusion_matrix):
         """
         Given a confusion matrix, compute the accuracy of the underlying classifier.
         """
@@ -165,4 +170,4 @@ if __name__ == "__main__":
     for ii in xrange(10):
         print("%i:\t" % ii + "\t".join(str(confusion[ii].get(x, 0))
                                        for x in xrange(10)))
-    print("Accuracy: %f" % knn.acccuracy(confusion))
+    print("Accuracy: %f" % knn.accuracy(confusion))
