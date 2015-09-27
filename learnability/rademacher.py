@@ -155,10 +155,44 @@ def origin_plane_hypotheses(dataset):
       dataset: The dataset to use to generate hypotheses
 
     """
+    x = zeros(len(dataset))
+    y = zeros(len(dataset))
+    theta = zeros(len(dataset)+2)
 
-    # TODO: Complete this function
+    for i, j in zip(dataset, range(len(dataset))):
+        x[j] = i[0]
+        y[j] = i[1]
+        theta[j] = atan(y[j]/x[j])
+    theta[j+1] = 0
+    theta[j+2] = pi*0.5
 
-    yield OriginPlaneHypothesis(1.0, 0.0)
+    thetas = sortAndUniq(theta)
+    midTheta = findMidPoints(thetas)
+
+    for i in range(len(midTheta)):
+        x, y = degree_to_normal_vector(midTheta[i])
+        yield OriginPlaneHypothesis(x, -y)
+        yield OriginPlaneHypothesis(-x, y)
+
+def findMidPoints(theta):
+    n = len(theta)
+    midTheta = zeros(n-1)
+    for i in range(n-1):
+        midTheta[i] = (theta[i]+theta[i+1])*0.5
+    return midTheta
+
+def sortAndUniq(input):
+    output = []
+    for x in input:
+        if x not in output:
+            output.append(x)
+    output.sort()
+    return output
+
+def degree_to_normal_vector(theta):
+    x = sin(theta)
+    y = cos(theta)
+    return x, y
 
 def plane_hypotheses(dataset):
     """
