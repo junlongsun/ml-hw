@@ -43,13 +43,7 @@ hypotheses = lambda x: [PlaneHypothesis(0, 0, 5),
 full_shatter = [(1, 1), (-1, -1)]
 half_shatter = [(1, 1), (1, -1), (-1, 1), (-1, -1)]
 
-hyps = list(origin_plane_hypotheses(var2d[4]))
+labels = [+1, +1, -1, +1]
+hyp = PlaneHypothesis(0, 1, 0)
 
-for pp in [[True, True, True, True],
-           [False, False, True, True],
-           [False, False, True, False],
-           [True, True, False, True],
-           [True, True, False, False],
-           [False, False, False, False]]:
-           assign_exists(var2d[4], hyps, pp)
-print len(hyps)
+print hyp.correlation(half_shatter, labels)

@@ -30,8 +30,17 @@ class Classifier:
 
         assert all(x == 1 or x == -1 for x in labels), "Labels must be binary"
 
-        # TODO: implement this function
-        return 0.0
+        corr = 0
+        for x, y in zip(data, labels):
+            if self.classify(x):
+                h=1
+            else:
+                h=-1
+            corr += h*y
+
+        corr = float(corr)/len(labels)
+
+        return corr
 
 
 class PlaneHypothesis(Classifier):
