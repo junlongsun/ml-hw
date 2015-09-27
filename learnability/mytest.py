@@ -45,12 +45,23 @@ half_shatter = [(1, 1), (1, -1), (-1, 1), (-1, -1)]
 
 '''
 hyps = list(axis_aligned_hypotheses(var2d[1]))
-print var2d[1]
-print hyps
 print assign_exists(var2d[1], hyps, [True])
 print assign_exists(var2d[1], hyps, [False])
-'''
+
 
 hyps = list(axis_aligned_hypotheses(var2d[2]))
 for pp in [[False, False], [False, True], [True, False], [True, True]]:
     print assign_exists(var2d[2], hyps, pp)
+'''
+
+hyps = list(axis_aligned_hypotheses(var2d[3]))
+for pp in [[False, False, False],
+           [False, True, False], [False, True, False], [False, False, True],
+           [True, True, False], [True, False, True],
+           [True, True, True]]:
+    print assign_exists(var2d[3], hyps, pp)
+    #self.assertTrue(assign_exists(var2d[3], hyps, pp))
+
+
+hyps = list(axis_aligned_hypotheses(var2d[4]))
+print len(hyps)

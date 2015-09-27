@@ -2,10 +2,13 @@ from random import randint, seed
 from collections import defaultdict
 from math import atan, sin, cos, pi
 
-from numpy import array, zeros
+import numpy as np
+from numpy import array, zeros, mean
 from numpy.linalg import norm
 
 from bst import BST
+
+import itertools
 
 kSIMPLE_DATA = [(1., 1.), (2., 2.), (3., 0.), (4., 2.)]
 
@@ -188,15 +191,88 @@ def axis_aligned_hypotheses(dataset):
     #length = 0
     x = zeros(len(dataset))
     y = zeros(len(dataset))
-    width = 0.5
-    height = 0.5
+    #width = 0.5
+    #height = 0.5
     #Rectangle = {}
     #d = defaultdict(set)
+    '''
+    num=0
+    '''
+    width2original, height2original = find_min_width_and_height_to_original(dataset)
+    yield AxisAlignedRectangle(0,0, width2original, height2original)
+    '''
+    num=1
+    '''
     for i, j in zip(dataset, range(len(dataset))):
         x[j] = i[0]
         y[j] = i[1]
+        width = 0.01
+        height = 0.01
+        yield AxisAlignedRectangle(x[j]-width, y[j]-height, x[j]+width, y[j]+height)
+    '''
+    num=2, 3, 4, ...
+    '''
+'''
+    combine =  list(itertools.combinations(dataset, 2))
+    for mylist in combine:
+        rec = find_rectangle(mylist)
+        if drop_rectangle(dataset, mylist, rec, 2):
+            yield rec
+    combine =  list(itertools.combinations(dataset, 3))
+    for mylist in combine:
+        rec = find_rectangle(mylist)
+        if drop_rectangle(dataset, mylist, rec, 3):
+            yield rec
 
-        yield AxisAlignedRectangle(x[j]-0.5*width, y[j]-0.5*height, x[j]+0.5*width, y[j]+0.5*height)
+    combine =  list(itertools.combinations(dataset, 4))
+    for mylist in combine:
+        rec = find_rectangle(mylist)
+        if drop_rectangle(dataset, mylist, rec, 4):
+            yield rec
+'''
+
+    for num in range(2, len(dataset)+1):
+        if num < len(dataset)+1:
+            combine =  list(itertools.combinations(dataset, num))
+            for mylist in combine:
+                rec = find_rectangle(mylist)
+                if drop_rectangle(dataset, mylist, rec, num):
+                    yield rec
+
+
+def drop_rectangle(dataset, test, rec, length):
+    val = True
+    #if len(dataset) > length:
+    for t in itertools.ifilter(lambda x: (x not in test), dataset):
+        if rec.classify(t):
+            print dataset
+            print test
+            print t
+            val = False
+    return val
+
+def find_min_width_and_height_to_original(dataset):
+    x = zeros(len(dataset))
+    y = zeros(len(dataset))
+    for i, j in zip(dataset, range(len(dataset))):
+        x[j] = i[0]
+        y[j] = i[1]
+    width = min(x)/2
+    height = min(y)/2
+    return width, height
+
+def find_rectangle(dataset):
+    x = zeros(len(dataset))
+    y = zeros(len(dataset))
+    for i, j in zip(dataset, range(len(dataset))):
+        x[j] = i[0]
+        y[j] = i[1]
+    xMin, yMin, xMax, yMax = min(x), min(y), max(x), max(y)
+    width = abs(xMin-xMax)*1.1+0.01
+    height = abs(yMin-yMax)*1.1+0.01
+    xCenter = (xMin+xMax)*0.5
+    yCenter = (yMin+yMax)*0.5
+    return AxisAlignedRectangle(xCenter-0.5*width, yCenter-0.5*height, xCenter+0.5*width, yCenter+0.5*height)
 
 
 def coin_tosses(number, random_seed=0):
