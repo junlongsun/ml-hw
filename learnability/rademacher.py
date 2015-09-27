@@ -212,25 +212,6 @@ def axis_aligned_hypotheses(dataset):
     '''
     num=2, 3, 4, ...
     '''
-'''
-    combine =  list(itertools.combinations(dataset, 2))
-    for mylist in combine:
-        rec = find_rectangle(mylist)
-        if drop_rectangle(dataset, mylist, rec, 2):
-            yield rec
-    combine =  list(itertools.combinations(dataset, 3))
-    for mylist in combine:
-        rec = find_rectangle(mylist)
-        if drop_rectangle(dataset, mylist, rec, 3):
-            yield rec
-
-    combine =  list(itertools.combinations(dataset, 4))
-    for mylist in combine:
-        rec = find_rectangle(mylist)
-        if drop_rectangle(dataset, mylist, rec, 4):
-            yield rec
-'''
-
     for num in range(2, len(dataset)+1):
         if num < len(dataset)+1:
             combine =  list(itertools.combinations(dataset, num))
@@ -245,9 +226,6 @@ def drop_rectangle(dataset, test, rec, length):
     #if len(dataset) > length:
     for t in itertools.ifilter(lambda x: (x not in test), dataset):
         if rec.classify(t):
-            print dataset
-            print test
-            print t
             val = False
     return val
 
