@@ -326,9 +326,22 @@ def rademacher_estimate(dataset, hypothesis_generator, num_samples=500,
       num_samples: the number of samples to use in estimating the Rademacher
       correlation
     """
+    corrMax = zeros(num_samples)
+    for j in range(num_samples):
+        corr = zeros(len(hypothesis_generator(1)))
+        if j==0:
+            labels = coin_tosses(len(dataset),random_seed)
+        else:
+            labels = coin_tosses(len(dataset))
+        #print labels
+        for hh, i in zip(hypothesis_generator(1), range(len(hypothesis_generator(1)))):
+            corr[i] = hh.correlation(dataset, labels)
+        #print corr
+        corrMax[j] = max(corr)
+    #print mean(corrMax)
+    estimate = mean(corrMax)
 
-    # TODO: complete this function
-    return 0.0
+    return estimate
 
 if __name__ == "__main__":
     print("Rademacher correlation of constant classifier %f" %

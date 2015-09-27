@@ -3,7 +3,7 @@ import unittest
 from rademacher import origin_plane_hypotheses, axis_aligned_hypotheses, \
     rademacher_estimate, kSIMPLE_DATA as rad_data, PlaneHypothesis, \
     constant_hypotheses
-
+from rademacher import coin_tosses
 from vc_sin import train_sin_classifier
 
 def assign_exists(data, classifiers, pattern):
@@ -44,6 +44,19 @@ full_shatter = [(1, 1), (-1, -1)]
 half_shatter = [(1, 1), (1, -1), (-1, 1), (-1, -1)]
 
 labels = [+1, +1, -1, +1]
-hyp = PlaneHypothesis(0, 1, 0)
 
-print hyp.correlation(half_shatter, labels)
+#print hypotheses(1)[0].correlation(half_shatter, labels)
+#print len(hypotheses(1))
+#test = lambda x:[x+1, x^2]
+#print test(1)[0]
+print rademacher_estimate(full_shatter, hypotheses, num_samples=1000, random_seed=3)
+
+'''
+print rademacher_estimate([(0, 0)],
+                                                constant_hypotheses,
+                                                num_samples=1000,
+                                                random_seed=3)
+'''
+print rademacher_estimate(half_shatter, hypotheses,
+                                                  num_samples=1000,
+                                                  random_seed=3)
