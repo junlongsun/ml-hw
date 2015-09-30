@@ -45,18 +45,17 @@ half_shatter = [(1, 1), (1, -1), (-1, 1), (-1, -1)]
 
 labels = [+1, +1, -1, +1]
 
-#print hypotheses(1)[0].correlation(half_shatter, labels)
-#print len(hypotheses(1))
-#test = lambda x:[x+1, x^2]
-#print test(1)[0]
-print rademacher_estimate(full_shatter, hypotheses, num_samples=1000, random_seed=3)
+data = [(1, False), (2, True), (3, False)]
 
+classifier_pos = train_sin_classifier(data)
+
+print len(data)
+
+for xx, yy in data:
+    #print xx
+    print yy
+    print classifier_pos.classify(xx)
 '''
-print rademacher_estimate([(0, 0)],
-                                                constant_hypotheses,
-                                                num_samples=1000,
-                                                random_seed=3)
+            self.assertEqual(True if yy == +1 else False,
+                             classifier_pos.classify(xx))
 '''
-print rademacher_estimate(half_shatter, hypotheses,
-                                                  num_samples=1000,
-                                                  random_seed=3)
