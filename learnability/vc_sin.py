@@ -41,7 +41,7 @@ class SinClassifier:
         """
         assert isinstance(x, int), "Object to be classified must be an integer"
 
-        print self(x)
+        #print self(x)
         if self(x) >= 0:
             return True
         else:
