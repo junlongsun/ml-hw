@@ -1,4 +1,5 @@
 from numpy import array, zeros
+import numpy as np
 
 kINSP = array([(1, 8, +1),
                (7, 2, -1),
@@ -31,3 +32,12 @@ x = sep_x
 y = sep_y
 w = array([0.2, 0.8])
 b = -0.2
+
+t=zeros(len(y))
+for i in range(len(y)):
+    #print y[i]
+    t[i] =  y[i] * (sum(x[i,:]*w)+b)
+
+print t
+print abs(t[0] - 1)
+print abs(t[0] - 1) < 1e-10

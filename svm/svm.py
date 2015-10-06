@@ -39,6 +39,10 @@ def find_support(x, y, w, b, tolerance=0.001):
     """
 
     support = set()
+    for i in range(len(y)):
+        print y[i] * (sum(x[i,:]*w)+b)
+        if abs(y[i] * (sum(x[i,:]*w)+b) - 1) < 1e-10:
+            support.add(i)
     # TODO: IMPLEMENT THIS FUNCTION
     return support
 
