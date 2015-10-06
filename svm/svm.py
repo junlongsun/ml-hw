@@ -25,7 +25,10 @@ def weight_vector(x, y, alpha):
     """
 
     w = zeros(len(x[0]))
-    # TODO: IMPLEMENT THIS FUNCTION
+    for j in range(len(x[0])):
+        for i in range(len(x[:,0])):
+            w[j] += alpha[i]*y[i]*x[i,j]
+
     return w
 
 
