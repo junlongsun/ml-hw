@@ -13,6 +13,7 @@ class TestKnn(unittest.TestCase):
         for ii in [1, 2, 3]:
             self.knn[ii] = Knearest(self.x, self.y, ii)
 
+        # example
         self.queries = array([[1, 5], [0, 3], [6, 1], [6, 4]])
 
     def test1(self):

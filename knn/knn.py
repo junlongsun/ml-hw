@@ -52,6 +52,7 @@ class Knearest:
         self._y = y
         self._k = k
 
+
     def majority(self, item_indices):
         """
         Given the indices of training examples, return the majority label.  If
@@ -59,8 +60,14 @@ class Knearest:
 
         :param item_indices: The indices of the k nearest neighbors
         """
+<<<<<<< HEAD
 
         #assert len(item_indices) == self._k, "Did not get k inputs"
+=======
+        assert len(item_indices) == self._k, "Did not get k inputs"
+        dist, item_indices = self._kdtree.query(X[0], self._k)
+
+>>>>>>> master
 
         # Finish this function to return the most common y value for
         # these indices
