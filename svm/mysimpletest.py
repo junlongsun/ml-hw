@@ -28,16 +28,15 @@ alpha[4] = 0.34
 alpha[0] = 0.12
 alpha[2] = 0.22
 
-x = sep_x
-y = sep_y
-w = array([0.2, 0.8])
-b = -0.2
+x = insep_x
+y = insep_y
+w = array([-.25, .25])
+b = -.25
 
-t=zeros(len(y))
+support = set()
 for i in range(len(y)):
-    #print y[i]
-    t[i] =  y[i] * (sum(x[i,:]*w)+b)
+    print y[i] * (sum(x[i,:]*w)+b)
+    if abs(y[i] * (sum(x[i,:]*w)+b) - 1) < 1e-10:
+        support.add(i)
 
-print t
-print abs(t[0] - 1)
-print abs(t[0] - 1) < 1e-10
+print support

@@ -40,7 +40,7 @@ def find_support(x, y, w, b, tolerance=0.001):
 
     support = set()
     for i in range(len(y)):
-        print y[i] * (sum(x[i,:]*w)+b)
+        #print y[i] * (sum(x[i,:]*w)+b)
         if abs(y[i] * (sum(x[i,:]*w)+b) - 1) < 1e-10:
             support.add(i)
     # TODO: IMPLEMENT THIS FUNCTION
@@ -54,5 +54,8 @@ def find_slack(x, y, w, b):
     """
 
     slack = set()
+    for i in range(len(y)):
+        if y[i] * (sum(x[i,:]*w)+b) < 0:
+            slack.add(i)
     # TODO: IMPLEMENT THIS FUNCTION
     return slack
