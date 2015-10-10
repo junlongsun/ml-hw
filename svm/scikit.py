@@ -72,8 +72,13 @@ data = Numbers("./mnist.pkl.gz")
 
 #print len(data.train_x[0])
 #print shape(data.train_y[0])
+#train_x = data.train_x
 train_x, train_y = select3and8(data.train_x, data.train_y)
-test_x, test_y = select3and8(data.test_x, data.test_y)
+#test_x, test_y = select3and8(data.test_x, data.test_y)
+
+print train_y[0]
+show(train_x[0].reshape(28, 28).T)
+#show(train_x[0])
 
 #print len(train_x)
 #print len(train_y)
@@ -85,22 +90,16 @@ test_x, test_y = select3and8(data.test_x, data.test_y)
 #print train_x[0:2]
 #print train_y[0:10]
 
+
+#clf0 = svm.SVC(C=1.0, kernel="linear")
+#clf0.fit(train_x, train_y)
+#print "c: 10.0, k: linear"
+#print calcScore(clf0.predict(test_x), test_y)
+
+#print clf0.support_
+#print clf0.support_vectors_
+
 '''
-clf0 = svm.SVC(C=10.0, kernel="linear")
-clf0.fit(train_x, train_y)
-print "c: 10.0, k: linear"
-print calcScore(clf0.predict(test_x), test_y)
-
-print clf0.support_
-print clf0.support_vectors_[0]
-
-numpix = 28
-bp = [numpix*i for i in range(numpix+1)]
-image = [clf0.support_vectors_[bp[i]:bp[i+1]] for i in range(numpix)]
-show(image)
-'''
-
-
 clf0 = svm.SVC(C=10.0, kernel="linear")
 clf0.fit(train_x, train_y)
 print "c: 10.0, k: linear"
@@ -160,3 +159,4 @@ clf11  = svm.SVC(C=0.0001, kernel="rbf")
 clf11.fit(train_x, train_y)
 print "c: .0001, k: rbf"
 print calcScore(clf11.predict(test_x), test_y)
+'''
