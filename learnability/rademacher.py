@@ -326,6 +326,7 @@ def rademacher_estimate(dataset, hypothesis_generator, num_samples=500,
       num_samples: the number of samples to use in estimating the Rademacher
       correlation
     """
+<<<<<<< HEAD
     corrMax = zeros(num_samples)
     for j in range(num_samples):
         try:
@@ -343,6 +344,17 @@ def rademacher_estimate(dataset, hypothesis_generator, num_samples=500,
     estimate = mean(corrMax)
 
     return estimate
+=======
+
+    for ii in xrange(num_samples):
+        if random_seed != 0:
+            rademacher = coin_tosses(len(dataset), random_seed + ii)
+        else:
+            rademacher = coin_tosses(len(dataset))
+
+        # TODO: complete this function
+    return 0.0
+>>>>>>> ezubaric/master
 
 if __name__ == "__main__":
     print("Rademacher correlation of constant classifier %f" %
