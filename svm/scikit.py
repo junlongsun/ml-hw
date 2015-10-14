@@ -76,8 +76,7 @@ data = Numbers("./mnist.pkl.gz")
 train_x, train_y = select3and8(data.train_x, data.train_y)
 #test_x, test_y = select3and8(data.test_x, data.test_y)
 
-print train_y[0]
-show(train_x[0].reshape(28, 28).T)
+
 #show(train_x[0])
 
 #print len(train_x)
@@ -91,8 +90,21 @@ show(train_x[0].reshape(28, 28).T)
 #print train_y[0:10]
 
 
-#clf0 = svm.SVC(C=1.0, kernel="linear")
-#clf0.fit(train_x, train_y)
+clf0 = svm.SVC(C=1.0, kernel="linear")
+clf0.fit(train_x, train_y)
+index = clf0.support_
+alread3 = 0
+alread8 = 0
+for i in range(len(index)):
+    if train_y[index[i]] == 3 and alread3 == 0:
+        show(train_x[index[i]].reshape(28, 28).T)
+        alread3 = 1
+    if train_y[index[i]] == 8 and alread8 == 0:
+        show(train_x[index[i]].reshape(28, 28).T)
+        alread8 = 1
+    i += 1
+
+
 #print "c: 10.0, k: linear"
 #print calcScore(clf0.predict(test_x), test_y)
 
