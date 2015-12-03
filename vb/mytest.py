@@ -10,6 +10,7 @@ init_beta = array([[.26, .185, .185, .185, .185],
                         [.185, .185, .26, .185, .185],
                         [.185, .185, .185, .26, .185]])
 #------------------------------------------------------------#
+'''
 #test_single_phi
 vb = VariationalBayes()
 gamma = array([2.0, 2.0, 2.0])
@@ -25,12 +26,9 @@ print phi[1], beta[1][0] * prop / normalizer
 print phi[2], beta[2][0] * prop / normalizer
 
 sumGamma = numpy.sum(gamma)
-print sumGamma, digam(sumGamma)
-print exp(digam(gamma[0]) - digam(sumGamma))
-print beta[0][0] * prop / normalizer
-print (beta[0][0] * prop / normalizer) / (exp(digam(gamma[0]) - digam(sumGamma)))
-#------------------------------------------------------------#
 '''
+#------------------------------------------------------------#
+
 #test_multiple_phi
 vb = VariationalBayes()
 
@@ -45,6 +43,7 @@ print phi[1], beta[1][0] * prop / normalizer
 print phi[2], beta[2][0] * prop / normalizer
 #------------------------------------------------------------#
 #test_m
+'''
 vb = VariationalBayes()
 vb.init([], "stuck", 3)
 

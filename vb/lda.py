@@ -105,11 +105,11 @@ class VariationalBayes:
         #phi = numpy.zeros(numpy.size(gamma),numpy.size(word))
         phi = numpy.zeros(len(gamma))
         sumGamma = numpy.sum(gamma)
-        print beta.shape
+        #print beta.shape
         for i in range(len(gamma)):
             phi[i] = beta[i,word] * exp(digam(gamma[i]) - digam(sumGamma))
         sumPhi =  numpy.sum(phi)
-        return phi/float(sumPhi)
+        return count * phi/float(sumPhi)
 
     def e_step(self, local_parameter_iteration=50):
         """
