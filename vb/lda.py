@@ -102,9 +102,14 @@ class VariationalBayes:
         Given gamma vector and complete beta, compute the phi for a word with a
         given count
         """
-
-        # TODO: Complete this function!
-        return ones(len(gamma)) / float(len(gamma))
+        #phi = numpy.zeros(numpy.size(gamma),numpy.size(word))
+        phi = numpy.zeros(len(gamma))
+        sumGamma = numpy.sum(gamma)
+        print beta.shape
+        for i in range(len(gamma)):
+            phi[i] = beta[i,word] * exp(digam(gamma[i]) - digam(sumGamma))
+        sumPhi =  numpy.sum(phi)
+        return phi/float(sumPhi)
 
     def e_step(self, local_parameter_iteration=50):
         """
