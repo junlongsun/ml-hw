@@ -28,7 +28,7 @@ print phi[2], beta[2][0] * prop / normalizer
 sumGamma = numpy.sum(gamma)
 '''
 #------------------------------------------------------------#
-
+'''
 #test_multiple_phi
 vb = VariationalBayes()
 
@@ -41,12 +41,14 @@ normalizer = sum(x * prop for x in beta[:, 0]) / 2.0
 print phi[0], beta[0][0] * prop / normalizer
 print phi[1], beta[1][0] * prop / normalizer
 print phi[2], beta[2][0] * prop / normalizer
+'''
 #------------------------------------------------------------#
 #test_m
-'''
+
 vb = VariationalBayes()
 vb.init([], "stuck", 3)
 
+print vb._beta
 topic_count = array([[5., 4., 3., 2., 1.],
                      [0., 2., 2., 4., 1.],
                      [1., 1., 1., 1., 1.]])
@@ -56,5 +58,5 @@ print new_beta[2][3], .2
 print new_beta[0][0], .33333333
 print new_beta[1][4], .11111111
 print new_beta[0][3], .13333333
+
 #------------------------------------------------------------#
-'''

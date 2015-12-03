@@ -175,6 +175,12 @@ class VariationalBayes:
 
         # TODO: Finish this function!
         new_beta = self._beta
+        for i, j in zip(range(new_beta.shape[0]),range(new_beta.shape[1])):
+            sumTemp = 0
+            for d in range(self._num_docs):
+                for n in range(self._num_types):
+                    sumTemp += new_phi(self._gamma, self._beta, i, topic_counts[d,n])*topic_counts[d,n]**j
+            new_beta[i,j] = sumTemp
         return new_beta
 
     def update_alpha(self, current_alpha=None, gamma=None):
