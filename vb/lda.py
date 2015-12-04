@@ -84,7 +84,6 @@ class VariationalBayes:
 
         # define the total number of document
         self._num_docs = len(self._corpus[0])
-        #self._num_docs = 1
 
         # initialize a D-by-K matrix gamma, valued at N_d/K
         self._gamma = numpy.ones((self._num_docs, self._num_topics))
@@ -173,17 +172,11 @@ class VariationalBayes:
         the expected counts from the e step in the form of a matrix where each
         topic is a row.
         """
-        
+        phi = topic_counts
         new_beta = numpy.zeros((self._num_topics,self._num_types))
-        #print self._num_docs, self._num_types, self._num_topics
-        phi = numpy.zeros((self._num_docs, self._num_types, self._num_topics))#doc, word, topic, 1, 5, 3
-        for d in range(self._num_docs):#doc
-            for n in range(self._num_types):#word
-                phi[d,n,:] = self.new_phi(self._gamma[d,:], self._beta, n, 1)
         for i in range(self._num_topics):
             for j in range(self._num_types):
-                for d in range(self._num_docs):
-                    new_beta[i,j] += phi[d,j,i] * topic_counts[i,j]
+                    new_beta[i,j] = phi[i,j]
         for i in range(self._num_topics):
             new_beta[i,:] = new_beta[i,:]/ sum(new_beta[i,:])
         return new_beta
@@ -253,11 +246,11 @@ if __name__ == "__main__":
 
     argparser = argparse.ArgumentParser()
     argparser.add_argument("--documents", help="Raw documents",
-                           type=str, default="toy/toy.txt", required=False)
+                           type=str, default="ap/train.dat", required=False)
     argparser.add_argument("--num_topics", help="Number of topics",
                            type=int, default=10, required=False)
     argparser.add_argument("--vocab", help="Vocabulary",
-                           type=str, default="toy/toy.voc", required=False)
+                           type=str, default="ap/voc.dat", required=False)
     argparser.add_argument("--alpha", help="Alpha hyperparameter",
                            type=float, default=0.1, required=False)
     argparser.add_argument("--iterations", help="Number of outer iterations",
