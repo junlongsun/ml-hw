@@ -194,7 +194,59 @@ class VariationalBayes:
             gamma = self._gamma
 
         # Update below line
-        new_alpha = current_alpha
+        #new_alpha = current_alpha
+
+        alpha_sufficient_statistics = scipy.special.psi(gamma) - scipy.special.psi(numpy.sum(gamma, axis=1)[:, numpy.newaxis]);
+        alpha_sufficient_statistics = numpy.sum(alpha_sufficient_statistics, axis=0);  # [numpy.newaxis, :];
+
+        hyper_parameter_iteration=100
+        hyper_parameter_decay_factor=0.9
+        hyper_parameter_maximum_decay=10
+        hyper_parameter_converge_threshold=1e-6
+
+        alpha_update = current_alpha
+
+        decay = 0;
+        for alpha_iteration in xrange(hyper_parameter_iteration):
+            alpha_sum = numpy.sum(current_alpha)
+            alpha_gradient = self._num_docs * (digam(alpha_sum) - digam(current_alpha) + alpha_sufficient_statistics;
+            alpha_hessian = -self._num_docs * scipy.special.polygamma(1, current_alpha);
+
+            if numpy.any(numpy.isinf(alpha_gradient)) or numpy.any(numpy.isnan(alpha_gradient)):
+                print "illegal alpha gradient vector", alpha_gradient
+
+            sum_g_h = numpy.sum(alpha_gradient / alpha_hessian);
+            sum_1_h = 1.0 / alpha_hessian;
+
+            z = self._num_docs * scipy.special.polygamma(1, alpha_sum);
+            c = sum_g_h / (1.0 / z + sum_1_h);
+
+            # update the alpha vector
+            while True:
+                singular_hessian = False
+
+                step_size = numpy.power(hyper_parameter_decay_factor, decay) * (alpha_gradient - c) / alpha_hessian;
+                # print "step size is", step_size
+                assert(current_alpha.shape == step_size.shape);
+
+                if numpy.any(current_alpha <= step_size):
+                    singular_hessian = True
+                else:
+                    alpha_update = current_alpha - step_size;
+
+                if singular_hessian:
+                    decay += 1;
+                    if decay > hyper_parameter_maximum_decay:
+                        break;
+                else:
+                    break;
+
+            # compute the alpha sum
+            # check the alpha converge criteria
+            mean_change = numpy.mean(abs(alpha_update - current_alpha));
+            new_alpha = alpha_update;
+            if mean_change <= hyper_parameter_converge_threshold:
+                break;
 
         return new_alpha
 
