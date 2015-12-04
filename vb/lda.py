@@ -70,7 +70,6 @@ class VariationalBayes:
     def init(self, corpus, vocab, num_topics=5, alpha=0.1):
         """
         @param num_topics: the number of topics
-
         @param data: a defaultdict(dict) data type, first indexed by doc id,
         then indexed by term id take note: tokens are not types, they are
         repeatable and thus might be not unique
@@ -85,6 +84,7 @@ class VariationalBayes:
 
         # define the total number of document
         self._num_docs = len(self._corpus[0])
+        #self._num_docs = 1
 
         # initialize a D-by-K matrix gamma, valued at N_d/K
         self._gamma = numpy.ones((self._num_docs, self._num_topics))
@@ -106,6 +106,7 @@ class VariationalBayes:
         phi = numpy.zeros(len(gamma))
         sumGamma = numpy.sum(gamma)
         #print beta.shape
+
         for i in range(len(gamma)):
             phi[i] = beta[i,word] * exp(digam(gamma[i]) - digam(sumGamma))
         sumPhi =  numpy.sum(phi)
@@ -172,15 +173,19 @@ class VariationalBayes:
         the expected counts from the e step in the form of a matrix where each
         topic is a row.
         """
-
-        # TODO: Finish this function!
-        new_beta = self._beta
-        for i, j in zip(range(new_beta.shape[0]),range(new_beta.shape[1])):
-            sumTemp = 0
-            for d in range(self._num_docs):
-                for n in range(self._num_types):
-                    sumTemp += new_phi(self._gamma, self._beta, i, topic_counts[d,n])*topic_counts[d,n]**j
-            new_beta[i,j] = sumTemp
+        
+        new_beta = numpy.zeros((self._num_topics,self._num_types))
+        #print self._num_docs, self._num_types, self._num_topics
+        phi = numpy.zeros((self._num_docs, self._num_types, self._num_topics))#doc, word, topic, 1, 5, 3
+        for d in range(self._num_docs):#doc
+            for n in range(self._num_types):#word
+                phi[d,n,:] = self.new_phi(self._gamma[d,:], self._beta, n, 1)
+        for i in range(self._num_topics):
+            for j in range(self._num_types):
+                for d in range(self._num_docs):
+                    new_beta[i,j] += phi[d,j,i] * topic_counts[i,j]
+        for i in range(self._num_topics):
+            new_beta[i,:] = new_beta[i,:]/ sum(new_beta[i,:])
         return new_beta
 
     def update_alpha(self, current_alpha=None, gamma=None):

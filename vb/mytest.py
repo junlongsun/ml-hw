@@ -47,16 +47,11 @@ print phi[2], beta[2][0] * prop / normalizer
 
 vb = VariationalBayes()
 vb.init([], "stuck", 3)
-
-print vb._beta
+print vb._gamma
 topic_count = array([[5., 4., 3., 2., 1.],
                      [0., 2., 2., 4., 1.],
                      [1., 1., 1., 1., 1.]])
 
 new_beta = vb.m_step(topic_count)
-print new_beta[2][3], .2
-print new_beta[0][0], .33333333
-print new_beta[1][4], .11111111
-print new_beta[0][3], .13333333
-
+print new_beta
 #------------------------------------------------------------#

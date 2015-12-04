@@ -43,7 +43,7 @@ class TestVB(unittest.TestCase):
     def test_m(self):
         vb = VariationalBayes()
         vb.init([], "stuck", 3)
-
+        
         topic_count = array([[5., 4., 3., 2., 1.],
                              [0., 2., 2., 4., 1.],
                              [1., 1., 1., 1., 1.]])
