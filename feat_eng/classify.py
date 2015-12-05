@@ -62,7 +62,7 @@ if __name__ == "__main__":
     feat.show_top10(lr, labels)
 
     predictions = lr.predict(x_test)
-    o = DictWriter(open("predictions.csv", 'w'), ["id", "spoiler"])
+    o = DictWriter(open("output.csv", 'w'), ["id", "spoiler"])
     o.writeheader()
     for ii, pp in zip([x['id'] for x in test], predictions):
         d = {'id': ii, 'cat': labels[pp]}
